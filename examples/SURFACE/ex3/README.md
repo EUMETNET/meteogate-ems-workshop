@@ -12,6 +12,14 @@ public `everyone`/`everyone` credentials) and subscribes to a
 `country/organization/station/observation` topic — edit `TOPIC` in
 `main.py` to point at a different country, NMHS, or WIGOS station id.
 
+With uv:
+
 ```bash
 uv run python main.py
+```
+
+Without uv (with the `.venv` activated):
+
+```bash
+python main.py
 ```

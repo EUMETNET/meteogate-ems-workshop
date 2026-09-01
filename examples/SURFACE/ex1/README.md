@@ -8,8 +8,16 @@ at a single station (`locations` query, CoverageJSON).
 The kind of small, frequent request that backs for example a live status 
 tile on a dashboard.
 
+With uv:
+
 ```bash
 uv run python main.py
+```
+
+Without uv (with the `.venv` activated):
+
+```bash
+python main.py
 ```
 
 The API key and station queried are read from `config.toml` at the repo
