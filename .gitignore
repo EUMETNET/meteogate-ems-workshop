@@ -12,3 +12,6 @@ wheels/
 # Personal workshop settings (API key, station preference) — copy from
 # config.example.toml
 config.toml
+
+# CSV files
+*.csv
