@@ -31,8 +31,8 @@ BASE_URL = "https://api.meteogate.eu/eu-eumetnet-surface-observations"
 COLLECTION = "observations"
 
 CONFIG = load_config()
-SITE_NAME = CONFIG.station.name
-SITE_WIGOS_ID = CONFIG.station.wigos_id
+SITE_NAME = CONFIG.surface_station.name
+SITE_WIGOS_ID = CONFIG.surface_station.wigos_id
 
 STANDARD_NAMES = [
     "air_temperature",

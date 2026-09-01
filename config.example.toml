@@ -10,13 +10,17 @@
 # environment variable, or to anonymous access if neither is set.
 api_key = ""
 
-[station]
-# Preferred station used by the per-station examples
-# (SURFACE/ex1, CLIMATE/ex1, CLIMATE/ex2).
+[station.surface]
+# Preferred station for the E-SOH real-time examples (SURFACE/ex1) —
+# identified by WIGOS id.
 wigos_id = "0-246-0-101004"
 name = "Helsinki Kumpula"
-lon = 24.9613
-lat = 60.2031
+
+[station.climate]
+# Preferred station for the climate-normals/timeseries examples
+# (CLIMATE/ex1, CLIMATE/ex2) — identified by coordinates.
+wigos_id = "0-20000-0-06260"
+name = "De Bilt"
 
 [polygon]
 # Preferred WKT polygon used by per-area examples
