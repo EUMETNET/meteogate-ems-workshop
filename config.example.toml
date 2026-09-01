@@ -1,0 +1,24 @@
+# MeteoGate workshop configuration.
+#
+# Copy this file to `config.toml` (git-ignored) and fill in your own values.
+# Every example falls back to sane defaults / the METEOGATE_API_KEY env var
+# when a value is missing, so you only need to set what you want to change.
+
+[meteogate]
+# Your personal MeteoGate API key, for authenticated access with higher
+# rate limits. Leave empty to fall back to the METEOGATE_API_KEY
+# environment variable, or to anonymous access if neither is set.
+api_key = ""
+
+[station]
+# Preferred station used by the per-station examples
+# (SURFACE/ex1, CLIMATE/ex1, CLIMATE/ex2).
+wigos_id = "0-246-0-101004"
+name = "Helsinki Kumpula"
+lon = 24.9613
+lat = 60.2031
+
+[polygon]
+# Preferred WKT polygon used by per-area examples
+# (SURFACE/ex2)
+wkt = "POLYGON((21.0 59.5, 28.0 59.5, 28.0 61.5, 21.0 61.5, 21.0 59.5))"
