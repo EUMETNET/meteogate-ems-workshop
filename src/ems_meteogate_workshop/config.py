@@ -29,7 +29,8 @@ DEFAULT_SURFACE_STATION_WIGOS_ID = "0-246-0-101004"
 DEFAULT_CLIMATE_STATION_NAME = "De Bilt"
 DEFAULT_CLIMATE_STATION_WIGOS_ID = "0-20000-0-06260"
 
-DEFAULT_WKT = "POLYGON((21.0 59.5, 28.0 59.5, 28.0 61.5, 21.0 61.5, 21.0 59.5))"
+DEFAULT_SURFACE_WKT = "POLYGON((21.0 59.5, 28.0 59.5, 28.0 61.5, 21.0 61.5, 21.0 59.5))"
+DEFAULT_CLIMATE_WKT = "POLYGON((4.0 51.5, 7.0 51.5, 7.0 53.5, 4.0 53.5, 4.0 51.5))"
 
 
 @dataclass(frozen=True)
@@ -53,7 +54,8 @@ class WorkshopConfig:
     api_key: str | None
     surface_station: SurfaceStationPreference
     climate_station: ClimateStationPreference
-    polygon: str
+    surface_polygon: str
+    climate_polygon: str
 
 
 def _read_config_file() -> dict:
@@ -85,11 +87,13 @@ def load_config() -> WorkshopConfig:
         wigos_id=climate_raw.get("wigos_id") or DEFAULT_CLIMATE_STATION_WIGOS_ID
     )
 
-    polygon = raw.get("polygon", {}).get("wkt") or DEFAULT_WKT
+    surface_polygon = raw.get("polygon", {}).get("surface_wkt") or DEFAULT_SURFACE_WKT
+    climate_polygon = raw.get("polygon", {}).get("climate_wkt") or DEFAULT_CLIMATE_WKT
 
     return WorkshopConfig(
         api_key=api_key,
         surface_station=surface_station,
         climate_station=climate_station,
-        polygon=polygon,
+        surface_polygon=surface_polygon,
+        climate_polygon=climate_polygon,
     )

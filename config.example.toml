@@ -25,4 +25,5 @@ name = "De Bilt"
 [polygon]
 # Preferred WKT polygon used by per-area examples
 # (SURFACE/ex2)
-wkt = "POLYGON((21.0 59.5, 28.0 59.5, 28.0 61.5, 21.0 61.5, 21.0 59.5))"
+surface_wkt = "POLYGON((21.0 59.5, 28.0 59.5, 28.0 61.5, 21.0 61.5, 21.0 59.5))"
+climate_wkt = "POLYGON((5.0 52.0, 6.0 52.0,6.0 52.1,5.0 52.1, 5.0 52.0))"

@@ -27,7 +27,7 @@ BASE_URL = "https://api.meteogate.eu/eu-eumetnet-surface-observations"
 COLLECTION = "observations"
 CONFIG = load_config()
 
-COORDS = CONFIG.polygon
+COORDS = CONFIG.surface_polygon
 STANDARD_NAME = "air_temperature"
 METHOD = "mean"
 DURATION = "PT1H"
