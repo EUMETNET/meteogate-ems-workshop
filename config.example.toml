@@ -18,9 +18,15 @@ name = "Helsinki Kumpula"
 
 [station.climate]
 # Preferred station for the climate-normals/timeseries examples
-# (CLIMATE/ex1, CLIMATE/ex2) — identified by coordinates.
+# (CLIMATE/ex1, CLIMATE/ex2)
 wigos_id = "0-20000-0-06260"
 name = "De Bilt"
+
+[station.ord]
+# Preferred single site station for Open Radar Data
+# (ORD/ex2)
+site_id = "0-246-0-fikau"
+name = "Kaunispää"
 
 [polygon]
 # Preferred WKT polygon used by per-area examples

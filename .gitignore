@@ -15,3 +15,7 @@ config.toml
 
 # CSV files
 *.csv
+
+# Project download folders
+**/radar_composites/
+**/radar_volumes/

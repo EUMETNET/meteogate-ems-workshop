@@ -32,6 +32,9 @@ DEFAULT_CLIMATE_STATION_WIGOS_ID = "0-20000-0-06260"
 DEFAULT_SURFACE_WKT = "POLYGON((21.0 59.5, 28.0 59.5, 28.0 61.5, 21.0 61.5, 21.0 59.5))"
 DEFAULT_CLIMATE_WKT = "POLYGON((4.0 51.5, 7.0 51.5, 7.0 53.5, 4.0 53.5, 4.0 51.5))"
 
+DEFAULT_ORD_SITE_NAME = "Kaunispää"
+DEFAULT_ORD_SITE_ID = "0-246-0-fikau"
+
 
 @dataclass(frozen=True)
 class SurfaceStationPreference:
@@ -50,10 +53,19 @@ class ClimateStationPreference:
 
 
 @dataclass(frozen=True)
+class ORDStationPreference:
+    """A preferred ORD site, identified by site ID."""
+
+    name: str
+    site_id: str
+
+
+@dataclass(frozen=True)
 class WorkshopConfig:
     api_key: str | None
     surface_station: SurfaceStationPreference
     climate_station: ClimateStationPreference
+    ord_station: ORDStationPreference
     surface_polygon: str
     climate_polygon: str
 
@@ -87,6 +99,12 @@ def load_config() -> WorkshopConfig:
         wigos_id=climate_raw.get("wigos_id") or DEFAULT_CLIMATE_STATION_WIGOS_ID
     )
 
+    ord_raw = station_raw.get("ord", {})
+    ord_station = ORDStationPreference(
+        name=ord_raw.get("name") or DEFAULT_ORD_SITE_NAME,
+        site_id=ord_raw.get("site_id") or DEFAULT_ORD_SITE_ID,
+    )
+
     surface_polygon = raw.get("polygon", {}).get("surface_wkt") or DEFAULT_SURFACE_WKT
     climate_polygon = raw.get("polygon", {}).get("climate_wkt") or DEFAULT_CLIMATE_WKT
 
@@ -96,4 +114,5 @@ def load_config() -> WorkshopConfig:
         climate_station=climate_station,
         surface_polygon=surface_polygon,
         climate_polygon=climate_polygon,
+        ord_station=ord_station,
     )
