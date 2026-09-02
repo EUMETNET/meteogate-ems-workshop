@@ -29,7 +29,7 @@ from ems_meteogate_workshop.config import load_config
 URL_BASE = "https://api.meteogate.eu/eu-eumetnet-climate-observations/v1"
 COLLECTION = "eu-daily"
 STANDARD_NAMES = ["precipitation_amount", "air_temperature", "duration_of_sunshine"]
-METHODS = ["sum", "mean", "sum"]
+METHODS = ["sum", "mean"]
 DURATION = "-P1D,P1D"
 DATETIME = "1950-01-01T00:00:00Z/2026-12-31T00:00:00Z"
 OUTPUT_CSV = Path("./climate_export.csv")
