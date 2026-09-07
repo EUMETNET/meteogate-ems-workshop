@@ -1,6 +1,6 @@
-# SURFACE / ex1 — Live operations dashboard tile
+# SURFACE / ex1 — Live observations dashboard tile
 
-**Persona:** A person interested in latest observations
+**Persona:** Somebody who needs the latest observed air temperature, wind speed, wind gust, and rainfall rate at a single station, refreshed every few minutes
 
 Polls the E-SOH surface-observations collection on MeteoGate for the latest
 air temperature, wind speed, rainfall rate and wind speed of gust

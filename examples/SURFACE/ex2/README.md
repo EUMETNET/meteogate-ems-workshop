@@ -1,6 +1,6 @@
-# SURFACE / ex2 — Heatwave case-study time series
+# SURFACE / ex2 — Case-study time series
 
-**Persona:** a person analysing a specific weather event.
+**Persona:** A person wanting to make a case-study on a specific weather event who needs an hourly mean-temperature time series over a region for the last 24 hours.
 
 Uses the EDR `area` query to pull an hourly mean air-temperature time series
 for every station inside a WKT polygon over the last 24 hours, then loads

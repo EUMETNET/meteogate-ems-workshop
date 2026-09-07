@@ -1,6 +1,6 @@
 # CLIMATE / ex1 — Climate normals lookup for a station
 
-**Persona:** A person interested in longer daily mean temperature timeseries
+**Persona:** A person interested in daily mean temperature for a specific station over a longer period (2020-2026)
 
 Queries a provider's climate-normals collection through the CLIMATE API 
 (`https://api.meteogate.eu/eu-eumetnet-climate-observations/v1`) 

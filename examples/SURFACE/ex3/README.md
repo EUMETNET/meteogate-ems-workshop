@@ -1,6 +1,6 @@
 # SURFACE / ex3 — Threshold alerting via MQTT
 
-**Persona:** a person who requires notifications on weather phenomenom.
+**Persona:** A person who needs to know the instant any station in a region reports a dangerous wind gust or rain rate — not on some polling cadence, but as soon as the observation lands.
 
 Subscribes to E-SOH's MQTT notification topic instead of polling a
 REST endpoint, and raises an alert the instant a station inside the region

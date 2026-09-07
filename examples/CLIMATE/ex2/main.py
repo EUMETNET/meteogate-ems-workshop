@@ -1,7 +1,7 @@
 """CLIMATE / ex2 — Long-term precipitation trend analysis.
 
 Persona: a researcher who needs a multi-decade annual
-precipitation-total time series for a region, to compute a rolling mean and
+precipitation-total time series for a station, to compute a rolling mean and
 a simple linear trend.
 
 
