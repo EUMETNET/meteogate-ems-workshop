@@ -81,7 +81,7 @@ def latest_values(coverage: dict) -> dict[str, float | None]:
 
 
 async def main() -> None:
-    headers = {"Authorization": f"Bearer {CONFIG.api_key}"} if CONFIG.api_key else {}
+    headers = {"apikey": CONFIG.api_key} if CONFIG.api_key else {}
     async with httpx.AsyncClient(headers=headers) as client:
         coverage = await fetch_latest_observation(client)
 

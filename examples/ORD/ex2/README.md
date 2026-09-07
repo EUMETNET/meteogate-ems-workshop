@@ -2,8 +2,7 @@
 
 **Persona:** researcher studying a specific convective storm.
 
-Lists and concurrently downloads the raw ODIM HDF5 polar-volume scans from
-one radar site during a known event window, ready to open offline with
+Lists and concurrently downloads the raw ODIM HDF5 radial velocity scans from one radar site during a known event window, ready to open offline with
 tools like wradlib or Py-ART.
 
 With uv:

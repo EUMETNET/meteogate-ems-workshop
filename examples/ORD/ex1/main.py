@@ -77,7 +77,7 @@ async def download_file(client: httpx.AsyncClient, item: dict) -> Path:
 
 
 async def main() -> None:
-    headers = {"Authorization": f"Bearer {CONFIG.api_key}"} if CONFIG.api_key else {}
+    headers = {"apikey": CONFIG.api_key} if CONFIG.api_key else {}
     async with httpx.AsyncClient(headers=headers) as client:
         item = await fetch_latest_composite_metadata(client)
         print(f"Latest 'OPERA' composite: {item['domain']['axes']['t']['values'][-1]} — downloading")

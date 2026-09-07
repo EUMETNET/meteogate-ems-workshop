@@ -110,7 +110,7 @@ def coverage_to_rows(coverage: dict, station_names: dict[str, str]) -> list[dict
 
 
 async def main() -> None:
-    headers = {"Authorization": f"Bearer {CONFIG.api_key}"} if CONFIG.api_key else {}
+    headers = {"apikey": CONFIG.api_key} if CONFIG.api_key else {}
 
     async with httpx.AsyncClient(headers=headers) as client:
         coverages = await fetch_area_normals(client)

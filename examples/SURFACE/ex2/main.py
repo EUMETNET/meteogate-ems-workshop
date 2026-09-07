@@ -74,7 +74,7 @@ def to_dataframe(coverage_collection: dict) -> pd.DataFrame:
 
 
 async def main() -> None:
-    headers = {"Authorization": f"Bearer {CONFIG.api_key}"} if CONFIG.api_key else {}
+    headers = {"apikey": CONFIG.api_key} if CONFIG.api_key else {}
     async with httpx.AsyncClient(headers=headers) as client:
         coverage_collection = await fetch_area_timeseries(client)
 

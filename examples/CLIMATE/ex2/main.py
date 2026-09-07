@@ -85,7 +85,7 @@ def linear_trend_mm_per_decade(series: pd.Series) -> float:
 
 
 async def main() -> None:
-    headers = {"Authorization": f"Bearer {CONFIG.api_key}"} if CONFIG.api_key else {}
+    headers = {"apikey": CONFIG.api_key} if CONFIG.api_key else {}
     async with httpx.AsyncClient(headers=headers) as client:
         coverage = await fetch_annual_precipitation(client)
 

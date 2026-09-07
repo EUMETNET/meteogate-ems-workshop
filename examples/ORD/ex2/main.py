@@ -86,7 +86,7 @@ async def download_scans(client: httpx.AsyncClient, item: dict) -> list[str]:
 
 
 async def main() -> None:
-    headers = {"Authorization": f"Bearer {CONFIG.api_key}"} if CONFIG.api_key else {}
+    headers = {"apikey": CONFIG.api_key} if CONFIG.api_key else {}
     async with httpx.AsyncClient(headers=headers) as client:
         coverages = await list_scans(client)
         print(f"Found {len(coverages)} elevation level scans for site '{SITE_NAME}' during the event window.")
