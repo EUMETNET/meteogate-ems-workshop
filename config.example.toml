@@ -28,6 +28,12 @@ name = "De Bilt"
 site_id = "0-246-0-fikau"
 name = "Kaunispää"
 
+[station.warnings]
+# Preferred MeteoAlarm member country for the warnings examples
+# (WARNINGS/ex1) — identified by 2-letter country code.
+country_code = "FI"
+name = "Finland"
+
 [polygon]
 # Preferred WKT polygon used by per-area examples
 # (SURFACE/ex2)

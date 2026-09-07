@@ -4,9 +4,10 @@ Reads personal settings (MeteoGate API key, preferred stations) from a
 `config.toml` file at the repository root — copy `config.example.toml` to
 `config.toml` and fill in your own values to get started.
 
-SURFACE, CLIMATE and ORD examples query different kinds of collections and
-contain different datasets, so the config file has separate sections for
-`surface_station`, `climate_station`, `ord_station`.
+SURFACE, CLIMATE, ORD and WARNINGS examples query different kinds of
+collections and contain different datasets, so the config file has separate
+sections for `surface_station`, `climate_station`, `ord_station`,
+`warnings_country`.
 
 `config.toml` is git-ignored (it may hold a personal API key), so every
 example falls back to the `METEOGATE_API_KEY` environment variable and
@@ -35,6 +36,9 @@ DEFAULT_CLIMATE_WKT = "POLYGON((4.0 51.5, 7.0 51.5, 7.0 53.5, 4.0 53.5, 4.0 51.5
 DEFAULT_ORD_SITE_NAME = "Kaunispää"
 DEFAULT_ORD_SITE_ID = "0-246-0-fikau"
 
+DEFAULT_WARNINGS_COUNTRY_NAME = "Finland"
+DEFAULT_WARNINGS_COUNTRY_CODE = "FI"
+
 
 @dataclass(frozen=True)
 class SurfaceStationPreference:
@@ -61,11 +65,20 @@ class ORDStationPreference:
 
 
 @dataclass(frozen=True)
+class WarningsCountryPreference:
+    """A preferred MeteoAlarm member country, identified by its 2-letter code."""
+
+    name: str
+    country_code: str
+
+
+@dataclass(frozen=True)
 class WorkshopConfig:
     api_key: str | None
     surface_station: SurfaceStationPreference
     climate_station: ClimateStationPreference
     ord_station: ORDStationPreference
+    warnings_country: WarningsCountryPreference
     surface_polygon: str
     climate_polygon: str
 
@@ -105,6 +118,12 @@ def load_config() -> WorkshopConfig:
         site_id=ord_raw.get("site_id") or DEFAULT_ORD_SITE_ID,
     )
 
+    warnings_raw = station_raw.get("warnings", {})
+    warnings_country = WarningsCountryPreference(
+        name=warnings_raw.get("name") or DEFAULT_WARNINGS_COUNTRY_NAME,
+        country_code=warnings_raw.get("country_code") or DEFAULT_WARNINGS_COUNTRY_CODE,
+    )
+
     surface_polygon = raw.get("polygon", {}).get("surface_wkt") or DEFAULT_SURFACE_WKT
     climate_polygon = raw.get("polygon", {}).get("climate_wkt") or DEFAULT_CLIMATE_WKT
 
@@ -115,4 +134,5 @@ def load_config() -> WorkshopConfig:
         surface_polygon=surface_polygon,
         climate_polygon=climate_polygon,
         ord_station=ord_station,
+        warnings_country=warnings_country,
     )
