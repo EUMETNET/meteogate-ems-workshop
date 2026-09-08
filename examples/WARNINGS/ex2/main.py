@@ -8,6 +8,21 @@ The `warnings` collection only supports the `locations` data query so a
 small region is built by looping over a handful of country location ids,
 adding active warnings per country and per hazard type as they come in.
 
+What it does:
+- Loops the `warnings` EDR `locations` query once per country in REGION
+  (fetch_country_warnings) — there's no `area`/bbox query for warnings, so
+  covering a region costs one request per country instead of one.
+- Dedupes each country's hub index to one entry per alertId, then follows
+  each unique alert's `json` link to resolve its full CAP document
+  (fetch_cap_info).
+- Pulls the hazard category out of each CAP `info` block's `parameter`
+  list (awareness_type_name) — the `awareness_type` entry looks like
+  "5; high-temperature" — and lowercases it so the same hazard reported by
+  different countries/languages groups together.
+- Adding two `collections.Counter`s (by_country, by_hazard) as results
+  come in and prints both sorted most-common-first, an empty region prints
+  a "no warnings active" message instead of an empty report.
+
 API: https://api.meteogate.eu/warnings
 
 Usage:

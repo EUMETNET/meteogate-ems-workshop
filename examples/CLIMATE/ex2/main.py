@@ -4,6 +4,23 @@ Persona: a researcher who needs a multi-decade annual
 precipitation-total time series for a station, to compute a rolling mean and
 a simple linear trend.
 
+What it does:
+- Connects to the CLIMATE API's `eu-daily` EDR `locations` endpoint for
+  the configured station (fetch_annual_precipitation), with
+  standard_name=precipitation_amount, method=sum and a 1900-2026 datetime
+  range — one request returns over a century of daily totals.
+- Converts the response into a pandas Series (to_series) — finds the range
+  key containing "precipitation_amount", indexes it by the `t` axis parsed
+  as datetimes, and drops nulls (stations rarely have a complete
+  century-long record).
+- Derives three statistics: to_annual_totals resamples the daily series to
+  yearly sums ("YE"); a 10-year rolling mean (min 5 years) is computed
+  directly in main; to_decade_means buckets years into decades
+  (year // 10 * 10) and averages; linear_trend_mm_per_decade fits a
+  degree-1 polynomial (numpy.polyfit) over "years since the record
+  started" and scales the slope to mm/decade.
+- Prints a short report: total years of data, the latest rolling-mean
+  value, the trend, and one line per decade's mean.
 
 The API key and station are read from `config.toml` at the repo root —
 copy `config.example.toml` to get started (falls back to the

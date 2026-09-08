@@ -42,6 +42,10 @@ cp config.example.toml config.toml
 committed. If it's absent, examples fall back to the `METEOGATE_API_KEY`
 environment variable (or anonymous access) and a default station.
 
+> **Note:** Even though the examples work without API key, especially the WARNINGS API has strict rate limits.
+> Consider using a MeteoGate API key when running the WARNINGS examples, rather than relying on anonymous access.
+
+
 ## Running an example
 
 With uv:

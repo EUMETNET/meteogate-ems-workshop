@@ -7,10 +7,27 @@ but as soon as the observation lands.
 E-SOH publishes a notification over MQTT for every new observation
 record (topic hierarchy: country/organization/station(wigos_id)/observation).
 This example subscribes and raises an alert the moment a threshold is
-crossed inside the region of interest — the event-driven counterpart to
-polling a REST endpoint.
+crossed inside the region of interest.
 
-MQTT broker: observations.meteogate.eu:443 (WebSocket over TLS), 
+What it does:
+- Connects to the E-SOH broker — observations.meteogate.eu:443, MQTT over
+  WebSocket + TLS (path /mqtt/), with the public credentials
+  everyone/everyone.
+- Subscribes to a wildcard topic — the hierarchy is
+  country/organization/station(wigos_id)/observation. The configured
+  TOPIC = "no/met/+/#" means every station, every parameter, from MET
+  Norway. The comments give alternatives (fi/fmi/+/#, nl/knmi/+/#), note
+  that GTS/WIS2-relayed data is noisy, so use eu/eumetnet/<wigos_id>/# if
+  you know the specific station.
+- Loops forever over incoming messages — each payload is JSON (a
+  GeoJSON-ish notification message); malformed ones are caught and skipped
+  rather than killing the loop.
+- Filters and alerts (process_notification) — reads
+  properties.content.standard_name, looks it up in ALERT_THRESHOLDS;
+  anything not in that dict returns immediately. For a match it prints the
+  observation, then prints an ALERT — ... line if value > threshold.
+
+MQTT broker: observations.meteogate.eu:443 (WebSocket over TLS),
 Username: "everyone"
 Password: "everyone"
 

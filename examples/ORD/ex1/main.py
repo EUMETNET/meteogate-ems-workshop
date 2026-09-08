@@ -4,6 +4,19 @@ Persona: a hydrologist feeding a flood-forecasting model that needs the
 latest pan-European OPERA rain-rate composite as ODIM HDF5,
 on a tight polling loop.
 
+What it does:
+- Connects to the ORD API — GET
+  .../eu-eumetnet-weather-radar/collections/observations/locations/0-20010-0-OPERA
+  (OPERA's own EDR location id), filtered to the last 60 minutes.
+- Picks out the RATE composite (fetch_latest_composite_metadata) — scans
+  the returned coverages for the one whose `parameters` dict contains the
+  "RATE:comp" key, and raises if none is available yet (the composite may
+  still be generating).
+- Downloads the asset directly (download_file) — takes the coverage's
+  last `links` entry (the ODIM HDF5 download URL) and streams it to disk
+  in chunks rather than loading the whole file into memory, saving under
+  ./radar_composites/.
+
 Docs: https://eumetnet.github.io/openradardata-documentation/
 API:  https://api.meteogate.eu/eu-eumetnet-weather-radar
 
@@ -37,6 +50,8 @@ CONFIG = load_config()
 async def fetch_latest_composite_metadata(client: httpx.AsyncClient) -> dict:
     """List the most recent RATE composite for OPERA."""
     url = f"{BASE_URL}/collections/observations/locations/{LOCATION}"
+    # GET the ORD API's `observations` EDR `locations` query for OPERA's own
+    # location id (0-20010-0-OPERA), filtered to the last 60 minutes.
     now = datetime.now(UTC)
     window = f"{(now - timedelta(minutes=MINUTES)).isoformat(timespec='minutes')}/{now.isoformat(timespec='minutes')}"
     

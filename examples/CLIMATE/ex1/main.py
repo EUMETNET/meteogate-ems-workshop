@@ -7,6 +7,20 @@ Climate datasets are published as MeteoGate collections by each National
 Meteorological and Hydrological Service (NMHS) and reached through the
 MeteoGate Climate API, which works as an aggregator to the provider's own OGC API - EDR
 
+What it does:
+- Connects to the CLIMATE API (fetch_normals) — GET
+  .../eu-eumetnet-climate-observations/v1/collections/eu-daily/locations/{station_id}
+  for one station (from config.toml's `station.climate`), with
+  standard_name=air_temperature, method=mean, duration=-P1D,P1D and a fixed
+  2020-01-01/2026-12-31 datetime range.
+- Parses the response (daily_normals) — handles both a single Coverage and
+  a CoverageCollection (takes the first), finds whichever range key
+  contains "air_temperature" (the provider-specific key bakes in
+  level/method/duration, e.g. "air_temperature:2:mean:-P1D"), and zips the
+  `t` axis values with that range's values into (day, value) pairs.
+- Prints one line per day, formatting the temperature to one decimal or
+  "no data" for a null value.
+
 Docs:       https://api.meteogate.eu/eu-eumetnet-climate-observations/v1/docs/
 API:        https://api.meteogate.eu/eu-eumetnet-climate-observations/v1
 Collection: eu-daily

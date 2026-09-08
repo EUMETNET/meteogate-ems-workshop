@@ -7,6 +7,21 @@ last 24 hours, loaded into pandas for quick statistics and plotting.
 MeteoGate's EDR `area` query returns every station inside a bounding box as
 a CoverageJSON "coverage collection", one time series per site.
 
+What it does:
+- Queries MeteoGate's E-SOH `area` EDR endpoint
+  (fetch_area_timeseries) — GET .../collections/observations/area with a
+  WKT polygon (`coords`, from config.toml's `polygon.surface_wkt`),
+  standard_name=air_temperature, method=mean, duration=PT1H and a 24h
+  datetime window — one request returns every station inside the box.
+- Flattens the response (to_dataframe) — each coverage becomes rows of
+  {station_id, time, air_temperature_c}, station_id read from the
+  `metocean:wigosId` property (falling back to the domain type if it's
+  missing).
+- Aggregates with pandas — groups by station_id, computes mean/max/min per
+  site, and prints the ten stations with the highest max temperature.
+- Prints a friendly "No observations returned" message instead of an empty
+  table if the polygon/window combination has no data.
+
 API: https://api.meteogate.eu/eu-eumetnet-surface-observations
 
 Usage:

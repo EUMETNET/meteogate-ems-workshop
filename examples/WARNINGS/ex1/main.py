@@ -1,13 +1,29 @@
 """WARNINGS / ex1 — Live warnings dashboard tile for one country.
 
 Persona: somebody who wants to know, right now, whether any weather warning
-is in effect for their country. This is the warnings counterpart of the
-SURFACE/ex1 live observations tile.
+is in effect for their country.
 
 MeteoGate exposes weather warnings issued by the MeteoAlarm member countries
 through an OGC API - EDR service. The `warnings` collection only supports
 the `locations` data query: `locations/{country_code}` returns one GeoJSON
 feature per combination, each linking out to the full CAP warning document.
+
+What it does:
+- Connects to the `warnings` EDR `locations` endpoint for one configured
+  country (fetch_current_warnings) — GET
+  .../warnings/collections/warnings/locations/{country_code} with
+  `datetime` (sent window, required, capped at 24h), `active` (still-valid
+  window, now to +2 days) and `language=en-GB`.
+- The response is only a hub index, not the warning text — it's deduped
+  to one entry per alertId (properties.alertId), since the same warning
+  shows up once per area/geometry and once per language it was issued in.
+- fetch_cap_info follows each hub feature's `json` link (one more request
+  per unique alert) to the full CAP document, and picks the
+  `info` block matching LANGUAGE, falling back to the first one if the
+  warning wasn't issued in it.
+- Prints one block per active warning: severity, event, area names,
+  description and the onset/expires validity window; a 204 response (no
+  warnings) is treated as an empty list rather than an error.
 
 API:        https://api.meteogate.eu/warnings
 Collection: warnings

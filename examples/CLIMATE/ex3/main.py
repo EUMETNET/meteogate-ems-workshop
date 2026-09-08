@@ -11,6 +11,27 @@ loop. The `area` response identifies each station only by WIGOS id and
 coordinates, so a single follow-up `locations` query (also polygon-scoped)
 is used to look up human-readable station names.
 
+What it does:
+- Converts the configured WKT polygon to a plain bbox string
+  (polygon_bbox) — regex-extracts every number, splits into lon/lat pairs,
+  and takes their min/max; the `area` query wants coords as WKT but
+  `locations`'s bbox filter wants a flat "lon_min,lat_min,lon_max,lat_max".
+- Fetches every parameter for every station in the box in one request
+  (fetch_area_normals) — GET .../eu-daily/area with
+  standard_name=precipitation_amount,air_temperature,duration_of_sunshine
+  and method=sum,mean combined, over a 1950-2026 datetime range.
+- Looks up human-readable names (fetch_station_names) — a second,
+  metadata-only GET against .../eu-daily/locations?bbox=... (no
+  datetime/observations) since the `area` response only identifies
+  stations by WIGOS id.
+- Flattens each station's coverage into CSV rows (coverage_to_rows) —
+  matches each standard_name to whichever range key starts with it
+  (methods/durations are baked into the key, e.g.
+  "air_temperature:2:mean:-P1D"), and lines up each timestamp's values by
+  index across all three parameters.
+- Writes one row per station-day to climate_export.csv, printing a
+  "nothing written" message if the query returned no stations.
+
 Usage:
     uv run python main.py
 """

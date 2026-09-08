@@ -7,6 +7,22 @@ in order to examine storm dynamics using a tool such as wradlib or Py-ART.
 API: https://api.meteogate.eu/eu-eumetnet-weather-radar
      (single-site volumes are cached for 24h, then move to the archive)
 
+What it does:
+- Connects to the ORD `observations` EDR `locations` endpoint for a
+  single configured radar site (`station.ord` in config.toml) and
+  parameter-name=VRADH:scan — single-site volumes are only cached for 24h
+  before moving to the archive, so EVENT_START/EVENT_END are pinned to
+  "now minus 24h" rather than an actual storm's timestamp (list_scans).
+- Each returned coverage is one elevation sweep — list_scans returns the
+  raw list, one entry per elevation angle in the volume.
+- download_scans would fetch each sweep's ODIM HDF5 files (one per
+  `links` entry of type application/x-odim) — the actual download is
+  commented out by default to avoid pulling large files during the
+  workshop; only the destination path is printed.
+- main fans the (commented-out) downloads out concurrently across
+  elevation levels, capped at 4 at a time with an anyio.Semaphore inside a
+  task group.
+
 The API key is read from `config.toml` at the repo root — copy
 `config.example.toml` to get started (falls back to the METEOGATE_API_KEY
 env var, or anonymous access, if config.toml is absent).

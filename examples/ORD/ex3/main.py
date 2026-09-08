@@ -5,8 +5,24 @@ wants to react the moment a new scan is published, instead of
 polling the REST API on a fixed schedule.
 
 The ORD API publishes a MQTT notification for every new scan.
-This example subscribes to the topic corresponding to the DBZH 
-quantity and triggers a processing callback for each notification.
+This example subscribes to the topic corresponding to the DBZH
+quantity and triggers a "processing callback" for each notification.
+
+What it does:
+- Connects to the ORD broker — radar.meteogate.eu:8884, MQTT over
+  WebSocket + TLS (path /ordmqtt/), with the public credentials
+  everyone/everyone.
+- Subscribes to a topic scoped to one country and one quantity — TOPIC =
+  "ORD/fi.fmi/+/DBZH" means every FMI (Finland) site's DBZH (reflectivity)
+  scans; the '+' wildcards the site id. Comments show how to swap
+  naming_authority for another NMHS (se.smhi, de.dwd, ...) or wildcard
+  everything with "ORD/+/+/DBZH".
+- Loops forever over notifications — each payload is JSON; malformed ones
+  are caught and skipped rather than killing the loop.
+- process_notification finds the download link (the `links` entry whose
+  title contains "download"), fetches it, and prints how many bytes came
+  back before handing off to a placeholder "processing queue" print —
+  standing in for a real nowcasting job or cache write etc.
 
 Docs: https://eumetnet.github.io/openradardata-documentation/
 MQTT broker: radar.meteogate.eu:8884 (WebSocket over TLS), username "everyone"

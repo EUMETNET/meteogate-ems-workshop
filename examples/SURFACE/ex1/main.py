@@ -7,6 +7,20 @@ MeteoGate exposes European land-surface observations (E-SOH) through an
 OGC API - EDR service. A `locations` query returns the latest (or a
 time-windowed) observation at an observation station as a CoverageJSON document.
 
+What it does:
+- Connects to MeteoGate's E-SOH surface-observations API —
+  api.meteogate.eu/eu-eumetnet-surface-observations.
+- Builds a 30-minute EDR `locations` query (fetch_latest_observation) — GET
+  .../collections/observations/locations/{wigos_id} with
+  standard_name=air_temperature,wind_speed,wind_speed_of_gust,rainfall_rate
+  and a datetime window of "now-30min/now".
+- Parses the CoverageJSON response (latest_values) — handles both a single
+  Coverage and a CoverageCollection, and for each parameter's `ranges`
+  picks the last non-null value walking the series backwards (missing
+  samples near the edge of a live window are common).
+- Prints one line per parameter, or "no data" if every sample in the
+  window was null.
+
 Docs:       https://eumetnet.github.io/meteogate-documentation/
 API:        https://api.meteogate.eu/eu-eumetnet-surface-observations/
 Collection: observations
@@ -54,6 +68,8 @@ async def fetch_latest_observation(client: httpx.AsyncClient) -> dict:
         "datetime": window,
     }
     url = f"{BASE_URL}/collections/{COLLECTION}/locations/{SITE_WIGOS_ID}"
+    # GET against api.meteogate.eu/eu-eumetnet-surface-observations —
+    # a single EDR `locations` query for one station's last 30 minutes.
 
     try:
         response = await client.get(url, params=params, timeout=30.0)
